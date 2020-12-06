@@ -1,7 +1,11 @@
-import asyncio
-import random
+from util import esperar
 
 class ThreadAluno:
+  '''
+  - id_aluno = Diferencia alunos para compreensão da execução
+  - estado = Objeto que guarda referências às estruturas úteis para o controle
+    de concorrência
+  '''
   def __init__(self, id_aluno, estado):
     self.id_aluno = id_aluno
     self.estado = estado
@@ -9,23 +13,24 @@ class ThreadAluno:
   def __str__(self):
     return 'Aluno ' + str(self.id_aluno)
 
-  async def espera(self):
-    await asyncio.sleep(random.randint(0, 5))
-  
   async def pega_bebida(self):
-    await self.espera()
+    await esperar()
     print(str(self) + ': Garçom, traz uma bebida!')
-    await self.espera()
+    await esperar()
   
   async def bebe(self):
     print(str(self) + ': Comecei a beber.')
-    await self.espera()
+    await esperar()
     print(str(self) + ': Já estou remediado...')
-    await self.espera()
+    await esperar()
 
   async def sai(self):
     print(str(self) + ': Tchau para quem fica!')
   
+  '''
+  Rotina do aluno: chegar, pedir bebida, beber, ficar remediado e ir embora
+  assim que possível.
+  '''
   async def rodar(self):
     await self.pega_bebida()
     
