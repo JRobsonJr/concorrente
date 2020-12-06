@@ -4,7 +4,7 @@ from passageiro import ThreadPassageiro
 from estado import Estado
 
 def leitura_entradas():
-  capacidade = input('Quantas threads cabem no barco? (Default: C = 3) ')
+  capacidade = input('Quantas threads cabem no carro? (Default: C = 3) ')
   n = input('Quantos passageiros viajando hoje? (Default: n = 12) ')
 
   try:
@@ -23,7 +23,7 @@ async def main():
   capacidade, n = leitura_entradas()
   estado = Estado(capacidade, n)
   carro = ThreadCarro(capacidade, n, estado)
-  passageiras = [ThreadPassageiro(carro, i + 1, estado) for i in range(n)]
+  passageiras = [ThreadPassageiro(i + 1, estado) for i in range(n)]
   await asyncio.gather(carro.rodar(), *(passageira.rodar() for passageira in passageiras))
 
 asyncio.run(main())
