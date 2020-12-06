@@ -5,12 +5,20 @@ from aluno_ufcg import ThreadAlunoUFCG
 from aluno_uepb import ThreadAlunoUEPB
 from estado import Estado
 
+'''
+Cria aleatoriamente um aluno da UFCG ou da UEPB.
+'''
 def cria_aluno(estado, id_aluno):
   return [
     (ThreadAlunoUFCG(estado, id_aluno), 'ufcg'),
     (ThreadAlunoUEPB(estado, id_aluno), 'uepb')
   ][random.randint(0, 1)]
 
+'''
+Gera alunos aleatoriamente de acordo com total solicitado, respeitando restrição
+de números de alunos de cada universidade para que seja possível acontecer
+todas as viagens.
+'''
 def gera_alunos(n):
   ufcg_total = 0
   uepb_total = 0
@@ -26,7 +34,7 @@ def gera_alunos(n):
       uepb_total += 1
     alunos.append(aluno)
   
-  if ufcg_total % 2 == 1:
+  if ufcg_total % 2 == 1: # Garantia de que número de cada universidade é par
     ufcg_total += 1
     alunos.append(ThreadAlunoUFCG(estado, n))
   else:
@@ -37,11 +45,18 @@ def gera_alunos(n):
   
   return alunos
 
+'''
+Código que cria e invoca threads.
+'''
 async def main():
   n = input('Quantos alunos estarão passeando de barco hoje? (Será arredondado a um número divisível por 4; default: n = 8) ')
   
   try:
-    n = max(4, int(n) + int(n) % 4)
+    n = int(n)
+    if n == 0:
+      n = 4
+    elif n % 4 != 0:
+      n = int(n) + (4 - int(n) % 4)
   except ValueError:
     n = 8
 
