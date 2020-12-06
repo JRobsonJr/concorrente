@@ -1,0 +1,1 @@
+python3.7 q2/main.py

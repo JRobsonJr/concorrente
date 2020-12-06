@@ -19,6 +19,9 @@ def leitura_entradas():
   
   return capacidade, n
 
+'''
+Código que cria e invoca threads.
+'''
 async def main():
   capacidade, n = leitura_entradas()
   estado = Estado(capacidade, n)
